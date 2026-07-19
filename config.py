@@ -34,7 +34,10 @@ class Settings:
     # Rutas
     # ==========================
     chroma_path: str = os.getenv("CHROMA_PATH", "data/chroma_db")
+    collection_name: str = os.getenv("COLLECTION_NAME","knowledge_store")
     documents_path: str = os.getenv("DOCUMENTS_PATH", "data/documents")
+
+    
 
 
 settings = Settings()
