@@ -6,10 +6,10 @@ def main():
     chat = ChatService()
 
     question = (
-        "¿Como funciona la politica de reembolso?"
+        "¿Qué beneficios tiene el Programa Diamante?"
     )
 
-    answer = chat.ask(
+    response = chat.ask(
         question
     )
 
@@ -17,7 +17,15 @@ def main():
     print(question)
 
     print("\nRespuesta:")
-    print(answer)
+    print(response.answer)
+
+    print("\nFuentes:")
+
+    for source in response.sources:
+        print(
+            f"- {source['document']} "
+            f"(Página {source['page']})"
+        )
 
 
 if __name__ == "__main__":

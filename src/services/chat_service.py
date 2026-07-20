@@ -1,8 +1,9 @@
 from langchain_core.documents import Document
 
 from src.llm.llm import get_llm
-from src.rag.retriever import Retriever
+from src.models.chat import ChatResponse
 from src.prompts.system_prompt import SYSTEM_PROMPT
+from src.rag.retriever import Retriever
 
 
 class ChatService:
@@ -18,7 +19,7 @@ class ChatService:
     def ask(
         self,
         question: str,
-    ) -> str:
+    ) -> ChatResponse:
         """
         Ejecuta una consulta RAG completa.
         """
@@ -40,22 +41,49 @@ class ChatService:
             prompt
         )
 
-        return response.content
+        return ChatResponse(
+            answer=response.content,
+            sources=self._extract_sources(
+                documents
+            ),
+        )
 
     def _build_context(
         self,
         documents: list[Document],
     ) -> str:
         """
-        Convierte documentos recuperados
-        en texto para el LLM.
+        Construye el contexto enviado al LLM.
         """
 
-        context = []
+        return "\n\n".join(
+            document.page_content
+            for document in documents
+        )
+
+    def _extract_sources(
+        self,
+        documents: list[Document],
+    ) -> list[dict]:
+        """
+        Extrae información de las fuentes utilizadas.
+        """
+
+        sources = []
 
         for document in documents:
-            context.append(
-                document.page_content
+
+            metadata = document.metadata
+
+            sources.append(
+                {
+                    "document": metadata.get(
+                        "document_name"
+                    ),
+                    "page": metadata.get(
+                        "page"
+                    ),
+                }
             )
 
-        return "\n\n".join(context)
+        return sources
