@@ -13,6 +13,8 @@ class AgentState(TypedDict):
 
     route: str
 
+    messages: list
+
     documents: list
 
     context: str

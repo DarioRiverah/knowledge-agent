@@ -4,13 +4,14 @@ from src.rag.retriever import Retriever
 from src.llm.llm import get_llm
 from src.prompts.system_prompt import SYSTEM_PROMPT
 from src.prompts.router_prompt import ROUTER_PROMPT
+from src.memory.conversation import ConversationMemory
 
 
 retriever = Retriever()
 
 llm = get_llm()
 
-
+memory = ConversationMemory()
 
 def analyze_question(
     state: AgentState,
@@ -87,13 +88,38 @@ def generate_answer(
     state: AgentState,
 ) -> AgentState:
     """
-    Genera respuesta usando RAG.
+    Genera respuesta usando RAG
+    y memoria conversacional.
     """
 
-    prompt = SYSTEM_PROMPT.format(
-        context=state["context"],
-        question=state["question"],
+
+    history = memory.format_history(
+        state["messages"]
     )
+
+
+    prompt = f"""
+{SYSTEM_PROMPT}
+
+
+Historial de conversación:
+
+{history}
+
+
+Contexto documental:
+
+{state["context"]}
+
+
+Pregunta actual:
+
+{state["question"]}
+
+
+Responde utilizando únicamente el contexto documental
+cuando la información esté disponible.
+"""
 
 
     response = llm.invoke(
@@ -104,20 +130,42 @@ def generate_answer(
     state["answer"] = response.content
 
 
-    return state
+    memory.add_ai_message(
+        state["messages"],
+        response.content,
+    )
 
+
+    return state
 
 
 def generate_direct_answer(
     state: AgentState,
 ) -> AgentState:
     """
-    Genera respuestas simples
-    sin consultar documentos.
+    Respuesta directa usando memoria.
     """
 
+
+    history = memory.format_history(
+        state["messages"]
+    )
+
+
+    prompt = f"""
+Historial:
+
+{history}
+
+
+Nueva pregunta:
+
+{state["question"]}
+"""
+
+
     response = llm.invoke(
-        state["question"]
+        prompt
     )
 
 
@@ -125,6 +173,12 @@ def generate_direct_answer(
 
 
     state["sources"] = []
+
+
+    memory.add_ai_message(
+        state["messages"],
+        response.content,
+    )
 
 
     return state

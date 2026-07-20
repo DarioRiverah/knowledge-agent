@@ -1,4 +1,5 @@
 from src.graph.graph import AgentGraph
+from langchain_core.messages import HumanMessage
 
 
 def main():
@@ -8,19 +9,25 @@ def main():
 
     state = {
 
-        "question": "Hola, ¿cómo estás?",
+    "question": "¿Cual me recomiendas?",
 
-        "route": "",
+    "route": "",
 
-        "documents": [],
+    "messages": [
+        HumanMessage(
+            content="Hola"
+        )
+    ],
 
-        "context": "",
+    "documents": [],
 
-        "answer": "",
+    "context": "",
 
-        "sources": [],
+    "answer": "",
 
-    }
+    "sources": [],
+
+}
 
 
     result = agent.invoke(
