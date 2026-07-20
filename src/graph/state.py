@@ -11,7 +11,7 @@ class AgentState(TypedDict):
 
     question: str
 
-    needs_documents: bool
+    route: str
 
     documents: list
 

@@ -84,10 +84,7 @@ class AgentGraph:
         workflow.add_conditional_edges(
             "analyze_question",
 
-            lambda state:
-                "rag"
-                if state["needs_documents"]
-                else "direct",
+            lambda state: state["route"],
 
             {
                 "rag": "retrieve_documents",

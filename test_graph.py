@@ -8,17 +8,17 @@ def main():
 
     state = {
 
-    "question": "Hola, preséntate",
+        "question": "Hola, ¿cómo estás?",
 
-    "needs_documents": False,
+        "route": "",
 
-    "documents": [],
+        "documents": [],
 
-    "context": "",
+        "context": "",
 
-    "answer": "",
+        "answer": "",
 
-    "sources": [],
+        "sources": [],
 
     }
 

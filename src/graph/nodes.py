@@ -3,6 +3,7 @@ from src.graph.state import AgentState
 from src.rag.retriever import Retriever
 from src.llm.llm import get_llm
 from src.prompts.system_prompt import SYSTEM_PROMPT
+from src.prompts.router_prompt import ROUTER_PROMPT
 
 
 retriever = Retriever()
@@ -15,42 +16,30 @@ def analyze_question(
     state: AgentState,
 ) -> AgentState:
     """
-    Analiza si la pregunta necesita
-    consultar documentos.
+    Clasifica la pregunta usando el LLM.
     """
 
-    question = state["question"].lower()
-
-
-    keywords = [
-        "política",
-        "politica",
-        "documento",
-        "envío",
-        "envio",
-        "reembolso",
-        "devolución",
-        "devolucion",
-        "garantía",
-        "garantia",
-        "pago",
-        "pedido",
-        "afiliado",
-        "cliente",
-    ]
-
-
-    needs_documents = any(
-        keyword in question
-        for keyword in keywords
+    prompt = ROUTER_PROMPT.format(
+        question=state["question"]
     )
 
 
-    state["needs_documents"] = needs_documents
+    response = llm.invoke(
+        prompt
+    )
+
+
+    route = response.content.strip().lower()
+
+
+    if route not in ["rag", "direct"]:
+        route = "rag"
+
+
+    state["route"] = route
 
 
     return state
-
 
 
 def retrieve_documents(
