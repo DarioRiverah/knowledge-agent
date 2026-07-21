@@ -1,8 +1,7 @@
 from pathlib import Path
 
 from config import settings
-from src.rag.vector_store import VectorStore
-from src.utils.id_generator import DocumentIdGenerator
+from src.rag.vector_store import get_vector_store
 
 
 class DeleteService:
@@ -13,7 +12,7 @@ class DeleteService:
 
     def __init__(self) -> None:
 
-        self._vector_store = VectorStore()
+        self._vector_store = get_vector_store()
 
         self._documents_path = Path(
             settings.documents_path
@@ -32,15 +31,11 @@ class DeleteService:
         - Embeddings asociados
         """
 
-        normalized_name = (
-            DocumentIdGenerator.normalize(
-                document_name
-            )
-        )
-
-
+        # delete_document() ya normaliza internamente el nombre,
+        # así que le pasamos el nombre original tal cual (evitamos
+        # normalizar dos veces).
         self._vector_store.delete_document(
-            normalized_name
+            document_name
         )
 
 

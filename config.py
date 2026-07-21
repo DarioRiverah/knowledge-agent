@@ -11,9 +11,19 @@ class Settings:
     # ==========================
     # LLM
     # ==========================
-    groq_api_key: str = os.getenv("GROQ_API_KEY", "")
-    model_name: str = os.getenv("MODEL_NAME", "llama-3.3-70b-versatile")
-    temperature: float = float(os.getenv("TEMPERATURE", 0))
+    groq_api_key: str = os.getenv(
+        "GROQ_API_KEY",
+        "",
+    )
+
+    model_name: str = os.getenv(
+        "MODEL_NAME",
+        "llama-3.3-70b-versatile",
+    )
+
+    temperature: float = float(
+        os.getenv("TEMPERATURE", 0)
+    )
 
     # ==========================
     # Embeddings
@@ -26,18 +36,39 @@ class Settings:
     # ==========================
     # RAG
     # ==========================
-    top_k: int = int(os.getenv("TOP_K", 4))
-    chunk_size: int = int(os.getenv("CHUNK_SIZE", 1000))
-    chunk_overlap: int = int(os.getenv("CHUNK_OVERLAP", 200))
+    top_k: int = int(
+        os.getenv("TOP_K", 3)
+    )
+
+    score_threshold: float = float(
+        os.getenv("SCORE_THRESHOLD", 0.8)
+    )
+
+    chunk_size: int = int(
+        os.getenv("CHUNK_SIZE", 1000)
+    )
+
+    chunk_overlap: int = int(
+        os.getenv("CHUNK_OVERLAP", 200)
+    )
 
     # ==========================
     # Rutas
     # ==========================
-    chroma_path: str = os.getenv("CHROMA_PATH", "data/chroma_db")
-    collection_name: str = os.getenv("COLLECTION_NAME","knowledge_store")
-    documents_path: str = os.getenv("DOCUMENTS_PATH", "data/documents")
+    chroma_path: str = os.getenv(
+        "CHROMA_PATH",
+        "data/chroma_db",
+    )
 
-    
+    collection_name: str = os.getenv(
+        "COLLECTION_NAME",
+        "knowledge_store",
+    )
+
+    documents_path: str = os.getenv(
+        "DOCUMENTS_PATH",
+        "data/documents",
+    )
 
 
 settings = Settings()

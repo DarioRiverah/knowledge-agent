@@ -3,9 +3,13 @@ import shutil
 
 from config import settings
 
+from src.exceptions.document_exceptions import (
+    DocumentAlreadyExistsError,
+)
+
 from src.rag.loader import DocumentLoader
 from src.rag.splitter import TextSplitter
-from src.rag.vector_store import VectorStore
+from src.rag.vector_store import get_vector_store
 from src.utils.id_generator import DocumentIdGenerator
 
 
@@ -19,7 +23,7 @@ class UploadService:
 
         self._loader = DocumentLoader()
         self._splitter = TextSplitter()
-        self._vector_store = VectorStore()
+        self._vector_store = get_vector_store()
 
         self._documents_path = Path(
             settings.documents_path
@@ -29,7 +33,6 @@ class UploadService:
             parents=True,
             exist_ok=True,
         )
-
 
     def upload(
         self,
@@ -42,6 +45,16 @@ class UploadService:
         """
 
         source = Path(file_path)
+
+        existing_documents = (
+            self._vector_store.list_documents()
+        )
+
+        if source.name in existing_documents:
+
+            raise DocumentAlreadyExistsError(
+                f"El documento '{source.name}' ya existe."
+            )
 
         destination = (
             self._documents_path /

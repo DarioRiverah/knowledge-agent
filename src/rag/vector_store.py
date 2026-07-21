@@ -1,4 +1,5 @@
 import shutil
+from functools import lru_cache
 from pathlib import Path
 
 from langchain_core.documents import Document
@@ -17,7 +18,6 @@ class VectorStore:
     - Crear o abrir ChromaDB.
     - Guardar documentos.
     - Eliminar documentos.
-    - Crear retrievers.
     """
 
     def __init__(self) -> None:
@@ -41,6 +41,7 @@ class VectorStore:
             collection_name=settings.collection_name,
             embedding_function=self._embedding_model.model,
             persist_directory=str(self._db_path),
+            collection_metadata={"hnsw:space": "cosine"},
         )
 
     def add_documents(
@@ -64,13 +65,6 @@ class VectorStore:
         """
         Elimina todos los chunks pertenecientes
         a un documento.
-
-        Acepta:
-        - Nombre original:
-          Guia de Envíos.pdf
-
-        - Nombre normalizado:
-          guia_de_envios_pdf
         """
 
         normalized_name = DocumentIdGenerator.normalize(
@@ -102,15 +96,23 @@ class VectorStore:
 
         return sorted(documents)
 
-    def get_retriever(self):
+    def similarity_search_with_score(
+        self,
+        query: str,
+        k: int,
+    ):
         """
-        Devuelve un retriever configurado.
+        Busca documentos junto con su score.
+
+        Retorna:
+        [
+            (Document, score)
+        ]
         """
 
-        return self._vector_store.as_retriever(
-            search_kwargs={
-                "k": settings.top_k
-            }
+        return self._vector_store.similarity_search_with_score(
+            query=query,
+            k=k,
         )
 
     def reset(self) -> None:
@@ -129,3 +131,14 @@ class VectorStore:
         )
 
         self._vector_store = self._create_vector_store()
+
+
+@lru_cache(maxsize=1)
+def get_vector_store() -> VectorStore:
+    """
+    Devuelve una única instancia compartida de VectorStore para
+    todo el proceso. Evita cargar el modelo de embeddings y abrir
+    múltiples conexiones a ChromaDB por separado en cada servicio
+    (UploadService, DeleteService, Retriever, sidebar, etc.).
+    """
+    return VectorStore()

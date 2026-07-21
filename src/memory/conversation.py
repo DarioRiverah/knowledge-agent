@@ -4,6 +4,9 @@ from langchain_core.messages import (
 )
 
 
+MAX_HISTORY_MESSAGES = 10
+
+
 class ConversationMemory:
     """
     Administra el historial de conversación.
@@ -48,12 +51,17 @@ class ConversationMemory:
     ) -> str:
         """
         Convierte mensajes en texto.
+
+        Solo se incluyen los últimos MAX_HISTORY_MESSAGES mensajes,
+        para evitar que el prompt crezca sin control en
+        conversaciones largas.
         """
 
         history = []
 
+        recent_messages = messages[-MAX_HISTORY_MESSAGES:]
 
-        for message in messages:
+        for message in recent_messages:
 
             role = (
                 "Usuario"

@@ -65,4 +65,13 @@ class DocumentLoader:
                 f"El formato '{extension}' no está soportado."
             )
 
+        if extension in (".txt", ".md"):
+            # autodetect_encoding evita UnicodeDecodeError en archivos
+            # que no estén en UTF-8 puro (por ejemplo, texto copiado
+            # desde Word con tildes/caracteres especiales en Latin-1).
+            return loader_class(
+                str(file_path),
+                autodetect_encoding=True,
+            )
+
         return loader_class(str(file_path))

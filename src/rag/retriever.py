@@ -1,6 +1,7 @@
 from langchain_core.documents import Document
 
-from src.rag.vector_store import VectorStore
+from config import settings
+from src.rag.vector_store import get_vector_store
 
 
 class Retriever:
@@ -10,18 +11,40 @@ class Retriever:
     """
 
     def __init__(self) -> None:
-        self._vector_store = VectorStore()
 
-        self._retriever = (
-            self._vector_store.get_retriever()
-        )
+        self._vector_store = get_vector_store()
 
     def search(
         self,
         query: str,
     ) -> list[Document]:
         """
-        Busca documentos relevantes para una pregunta.
+        Busca documentos relevantes
+        utilizando el score de similitud.
         """
 
-        return self._retriever.invoke(query)
+        results = (
+            self._vector_store
+            .similarity_search_with_score(
+                query=query,
+                k=settings.top_k,
+            )
+        )
+
+        documents = []
+
+        for document, score in results:
+
+            print(
+                f"Documento: "
+                f"{document.metadata.get('document_name')} "
+                f"| Score: {score}"
+            )
+
+            if score <= settings.score_threshold:
+
+                documents.append(
+                    document
+                )
+
+        return documents

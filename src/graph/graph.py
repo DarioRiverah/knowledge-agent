@@ -10,8 +10,10 @@ from src.graph.nodes import (
     analyze_question,
     retrieve_documents,
     build_context,
+    validate_context,
     generate_answer,
     generate_direct_answer,
+    generate_off_topic_answer,
     extract_sources,
 )
 
@@ -54,6 +56,10 @@ class AgentGraph:
             build_context,
         )
 
+        workflow.add_node(
+            "validate_context",
+            validate_context,
+        )
 
         workflow.add_node(
             "generate_answer",
@@ -64,6 +70,12 @@ class AgentGraph:
         workflow.add_node(
             "generate_direct_answer",
             generate_direct_answer,
+        )
+
+
+        workflow.add_node(
+            "generate_off_topic_answer",
+            generate_off_topic_answer,
         )
 
 
@@ -90,6 +102,8 @@ class AgentGraph:
                 "rag": "retrieve_documents",
 
                 "direct": "generate_direct_answer",
+
+                "off_topic": "generate_off_topic_answer",
             },
         )
 
@@ -103,6 +117,12 @@ class AgentGraph:
 
         workflow.add_edge(
             "build_context",
+            "validate_context",
+
+        )   
+
+        workflow.add_edge(
+            "validate_context",
             "generate_answer",
         )
 
@@ -121,6 +141,12 @@ class AgentGraph:
 
         workflow.add_edge(
             "generate_direct_answer",
+            END,
+        )
+
+
+        workflow.add_edge(
+            "generate_off_topic_answer",
             END,
         )
 

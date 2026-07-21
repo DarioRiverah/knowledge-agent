@@ -1,5 +1,7 @@
 from typing import TypedDict
 
+from src.memory.conversation import ConversationMemory
+
 
 class AgentState(TypedDict):
     """
@@ -15,9 +17,13 @@ class AgentState(TypedDict):
 
     messages: list
 
+    memory: ConversationMemory
+
     documents: list
 
     context: str
+
+    context_valid: bool
 
     answer: str
 
