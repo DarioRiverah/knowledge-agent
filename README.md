@@ -7,6 +7,19 @@ Este proyecto fue desarrollado como parte del reto de la especialización **Orac
 <img src="assets/img/bimbam_boy.png" alt="BimBam Boy" width="220" />
 
 ---
+# 🚀 Demo
+
+Puedes probar el agente sin necesidad de instalar nada:
+
+👉 **https://bimbamboy.streamlit.app/**
+
+### Vista de la aplicación
+
+<p align="center">
+  <img src="assets/img/bimbamboycap.png" alt="Captura de pantalla de BimBam Boy" width="900">
+</p>
+
+---
 
 ## ✨ Características
 
