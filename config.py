@@ -30,7 +30,7 @@ class Settings:
     # ==========================
     embedding_model: str = os.getenv(
         "EMBEDDING_MODEL",
-        "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+        "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
     )
 
     # ==========================
