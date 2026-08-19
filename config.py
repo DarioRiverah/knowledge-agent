@@ -18,7 +18,7 @@ class Settings:
 
     model_name: str = os.getenv(
         "MODEL_NAME",
-        "llama-3.3-70b-versatile",
+        "openai/gpt-oss-20b",
     )
 
     temperature: float = float(
