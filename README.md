@@ -58,7 +58,7 @@ Si en el camino `rag` no se encuentra información suficiente en los documentos,
 |---|---|
 | Orquestación del agente | [LangGraph](https://github.com/langchain-ai/langgraph) |
 | Framework de LLM | [LangChain](https://www.langchain.com/) |
-| Modelo de lenguaje | [Groq](https://groq.com/) (`llama-3.3-70b-versatile`) |
+| Modelo de lenguaje | [Groq](https://groq.com/) (`openai/gpt-oss-20b`) |
 | Embeddings | HuggingFace `sentence-transformers/paraphrase-multilingual-mpnet-base-v2` |
 | Base vectorial | [ChromaDB](https://www.trychroma.com/) (métrica coseno) |
 | Interfaz | [Streamlit](https://streamlit.io/) |
@@ -144,7 +144,7 @@ Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
 GROQ_API_KEY=tu_api_key_de_groq
 
 # Modelo
-MODEL_NAME=llama-3.3-70b-versatile
+MODEL_NAME=openai/gpt-oss-20b
 TEMPERATURE=0
 
 # RAG
