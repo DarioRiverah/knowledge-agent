@@ -5,9 +5,10 @@ BRAND_BLUE = "#2E5AAC"
 BRAND_BLUE_DARK = "#1D3F7A"
 BRAND_ORANGE = "#F5821F"
 BRAND_ORANGE_LIGHT = "#FCEEDD"
-BG_DARK = "#0B1220"
-BG_CARD = "#111C33"
-BORDER_SUBTLE = "rgba(245, 130, 31, 0.18)"
+BG_LIGHT = "#FFFFFF"
+BG_CARD = "#F4F6FB"
+BORDER_SUBTLE = "rgba(46, 90, 172, 0.18)"
+TEXT_MUTED = "#5C6B85"
 
 
 def load_styles() -> None:
@@ -37,19 +38,19 @@ def load_styles() -> None:
             padding: 1rem 1.1rem;
             margin-bottom: 0.9rem;
             border: 1px solid {BORDER_SUBTLE};
-            box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+            box-shadow: 0 2px 10px rgba(46,90,172,0.08);
         }}
 
         /* Mensajes del usuario: acento naranja */
         [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {{
-            background: linear-gradient(180deg, rgba(245,130,31,0.14), rgba(245,130,31,0.06));
-            border: 1px solid rgba(245,130,31,0.35);
+            background: linear-gradient(180deg, rgba(245,130,31,0.12), rgba(245,130,31,0.03));
+            border: 1px solid rgba(245,130,31,0.30);
         }}
 
         /* Mensajes del asistente: acento azul */
         [data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) {{
-            background: linear-gradient(180deg, rgba(46,90,172,0.16), rgba(46,90,172,0.06));
-            border: 1px solid rgba(46,90,172,0.35);
+            background: linear-gradient(180deg, rgba(46,90,172,0.10), rgba(46,90,172,0.03));
+            border: 1px solid rgba(46,90,172,0.25);
         }}
 
         /* ===== Botones ===== */
@@ -102,7 +103,7 @@ def load_styles() -> None:
         }}
 
         .bimbam-header-subtitle {{
-            color: #9FB3D9;
+            color: {TEXT_MUTED};
             margin: 0.3rem 0 0 0;
             font-size: 1.4rem;
         }}

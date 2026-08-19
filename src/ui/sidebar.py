@@ -21,7 +21,7 @@ def render_sidebar() -> None:
         with col2:
             st.markdown(
                 "<p style='font-weight:700; font-size:1.3rem; margin-bottom:0;'>BimBam Boy</p>"
-                "<p style='color:#9FB3D9; font-size:0.85rem; margin-top:0;'>Asistente virtual</p>",
+                "<p style='color:#5C6B85; font-size:0.85rem; margin-top:0;'>Asistente virtual</p>",
                 unsafe_allow_html=True,
             )
         
